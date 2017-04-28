@@ -18,18 +18,16 @@ router.post('/', function(req, res, next) {
       });
 });
 
-router.delete('/', function(req, res, next) {
-//      console.log(req.body.id);
-      Patient.findById(req.body.id).then(function(patient) {
+router.delete('/:id', function(req, res, next) {
+      Patient.findById(req.params.id).then(function(patient) {
         patient.destroy();
         res.send('OK');
       })
 });
 
 
-router.put('/', function(req, res, next) {
-//      console.log(req.body.id);
-      Patient.findById(req.body.id).then(function(patient) {
+router.put('/:id', function(req, res, next) {
+      Patient.findById(req.params.id).then(function(patient) {
         patient.update(req.body).then(function() {
           res.send('OK');
         })
