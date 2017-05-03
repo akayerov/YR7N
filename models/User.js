@@ -5,6 +5,9 @@ var User = sequelize.define('users', {
   username: {
     type: Sequelize.STRING
   },
+  password: {
+    type: Sequelize.STRING
+  },
   displayname: {
     type: Sequelize.STRING
   },
