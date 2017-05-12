@@ -17,7 +17,7 @@
                   : res.send({username: user.username, displayname: user.displayname});
               })
 //            : res.send(info.message,403);
-              : res.status(403).send(info.message);
+              : res.status(403).send({ err: info.message});
 
       }
     )(req, res, next);
