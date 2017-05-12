@@ -16,14 +16,30 @@ router.get('/', function(req, res, next) {
    }
 
 //  Record.scope('started').findAll({
-   RecScope.findAll({
-    include: [
-    { model: Mo }, // load all Mo
-    { model: Patient }, // load patient
-  ]}
-  ).then(function(patients) {
-      res.send(patients);
-  });
+   if( req.user.role == 0) {
+       RecScope.findAll({
+         where: {
+           moId :  req.user.moId
+         },
+         include: [
+         { model: Mo }, // load all Mo
+         { model: Patient }, // load patient
+        ]}
+       ).then(function(records) {
+          res.send(records);
+      });
+    }
+    else {
+      RecScope.findAll({
+        include: [
+        { model: Mo }, // load all Mo
+        { model: Patient }, // load patient
+       ]}
+      ).then(function(records) {
+         res.send(records);
+     });
+
+    }
 });
 
 
@@ -38,18 +54,18 @@ router.post('/', function(req, res, next) {
 router.delete('/:id', function(req, res, next) {
 //      оригинальный способ по переданному id в body, но мыработает в духе REST
 //      Record.findById(req.body.id).then(function(Record) {
-       Record.findById(req.params.id).then(function(Record) {
-        Record.destroy();
+       Record.findById(req.params.id).then(function(record) {
+        if( record.state == 0 && req.user.moId == record.moId)
+          record.destroy();
         res.send('OK');
       })
 });
 
 
-//router.put('/', function(req, res, next) {
   router.put('/:id', function(req, res, next) {
 //      console.log(req.body.id);
-      Record.findById(req.params.id).then(function(Record) {
-        Record.update(req.body).then(function() {
+      Record.findById(req.params.id).then(function(record) {
+        record.update(req.body).then(function() {
           res.send('OK');
         })
      })

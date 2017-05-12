@@ -15,6 +15,8 @@ var Record = sequelize.define('records', {
   }},
   {
   defaultScope: {
+    where: {
+    }
   },
   scopes: {
     started: {

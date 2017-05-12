@@ -16,7 +16,18 @@ var passport       = require('passport');
 var LocalStrategy  = require('passport-local').Strategy;
 var session        = require('express-session');
 var User           =  require('./db/passport-user');
-var login           =  require('./db/login');
+var login          =  require('./db/login');
+
+var cors           =  require('cors');
+
+// хэширование паролей
+var SHA256 = require("crypto-js/sha256");
+console.log('1:',SHA256("Open text"));
+
+var obj = SHA256("Open text").toString();
+console.log('2:',obj);
+var s = JSON.stringify(obj);
+console.log(s);
 
 
 var mustAuthenticatedMw = function (req, res, next){
@@ -26,10 +37,9 @@ var mustAuthenticatedMw = function (req, res, next){
     : res.send('Must be autentificate',403);
 };
 
-
-
 var app = express();
 
+app.use(cors());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -62,16 +72,16 @@ passport.use(new LocalStrategy({
          if(password === user.password)
            return done(null, user)
          else
-           return done(null, false, { message: 'Incorrect password.' })
+           return done(null, false, { message: 'Incorrect username or password.' })
       }
       else {
-        return done(null, false, { message: 'Incorrect username.' });
+        return done(null, false, { message: 'Incorrect username or password.' });
       }
     });
 }));
 // теперь сериализация по username
 passport.serializeUser(function(user, done) {
-  console.log('serializeUser', user, user.id, user.username);
+  console.log('serializeUser', user, user.id, user.username, user.moId);
   done(null, user.username);
 });
 
@@ -123,10 +133,10 @@ app.use(function(err, req, res, next) {
 
 // секция sequalize
 
-var syncAll = require('./db/schema/createall');
 // console.log(process.env);
 // Создание и заполнения базы по модели производится при наличии переменной
 // и если база заканчивается на _test
+var syncAll = require('./db/schema/createall');
 
 if( process.env.CREATEDB == 'true') {
   // console.log('Создание таблиц');

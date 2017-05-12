@@ -3,19 +3,22 @@
   var passport       = require('passport');
 
   var login = function(req, res, next) {
-//    console.log('login func');
+//    console.log(req);
     passport.authenticate('local',
       function(err, user, info) {
 //        console.log('!!!!', err, user, info);
+        console.log('!!!!', info);
         return err
           ? next(err)
           : user
             ? req.logIn(user, function(err) {
                 return err
                   ? next(err)
-                  : res.send('OK');
+                  : res.send({username: user.username, displayname: user.displayname});
               })
-            : res.send(info.message,403);
+//            : res.send(info.message,403);
+              : res.status(403).send(info.message);
+
       }
     )(req, res, next);
   };
