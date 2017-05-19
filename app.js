@@ -9,6 +9,8 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var patients = require('./routes/patients');
 var records = require('./routes/records');
+var whoami = require('./routes/whoami');
+var sessions = require('./routes/sessions');
 var Sequelize = require("sequelize");
 
 // security
@@ -16,11 +18,15 @@ var passport       = require('passport');
 var LocalStrategy  = require('passport-local').Strategy;
 var session        = require('express-session');
 var User           =  require('./db/passport-user');
-var login          =  require('./db/login');
+//var login          =  require('./db/login');
+var login          =  require('./db/loginMy');
 
 var cors           =  require('cors');
+// kir
+var JwtCtrl = require('./controllers/jwt.controller');
 
 // хэширование паролей
+/*
 var SHA256 = require("crypto-js/sha256");
 console.log('1:',SHA256("Open text"));
 
@@ -28,13 +34,24 @@ var obj = SHA256("Open text").toString();
 console.log('2:',obj);
 var s = JSON.stringify(obj);
 console.log(s);
-
+*/
 
 var mustAuthenticatedMw = function (req, res, next){
   console.log('mustAuthenticatedMw');
   req.isAuthenticated()
     ? next()
-    : res.send('Must be autentificate',403);
+//    : res.send('Must be autentificate',403);
+    : res.status(403).send({state:0, info: { err: 'Must be autentificate'}});
+
+};
+var mustAuthenticatedJWT = function (req, res, next){
+  console.log('mustAuthenticatedJWT');
+
+  req.isAuthenticated()
+    ? next()
+//    : res.send('Must be autentificate',403);
+    : res.status(403).send({state:0, info: { err: 'Must be autentificate'}});
+
 };
 
 var app = express();
@@ -54,12 +71,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // security
 app.use(session({
-  secret: 'sO9hmecret'
+  secret: 'sO9hmecret',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+   httpOnly: false
+ }
+
 }));
 // Passport:
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+passport.use(JwtCtrl.jwtStrategy);
+/*
 passport.use(new LocalStrategy({
   usernameField: 'username',
   passwordField: 'password'
@@ -79,6 +105,7 @@ passport.use(new LocalStrategy({
       }
     });
 }));
+*/
 // теперь сериализация по username
 passport.serializeUser(function(user, done) {
   console.log('serializeUser', user, user.id, user.username, user.moId);
@@ -102,7 +129,14 @@ passport.deserializeUser(function(username, done) {
 app.use('/', index);
 app.use('/users', users);
 app.use('/patients', patients);
-app.use('/records', mustAuthenticatedMw, records);
+app.use('/sessions', sessions);
+//app.use('/records', mustAuthenticatedMw, records);
+//app.use('/whoami', mustAuthenticatedMw, whoami);
+app.use('/records', passport.authenticate('jwt', { session: false }), records);
+app.use('/private', passport.authenticate('jwt', { session: false }), function (req, res) {
+  console.log(req);
+  res.json({ success: true, result: [{ id: '01', name: 'Apple' },  { id: '02', name: 'Orange' }] })
+})
 
 // Auth system
 app.post('/login',  login);

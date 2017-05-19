@@ -9,7 +9,7 @@ String.prototype.trim = function() {
 
 module.exports.findOne = function(username, callback) {
   var err = '';
-  db.oneOrNone('SELECT * FROM public.users WHERE username=$1', username)
+    db.oneOrNone('SELECT * FROM public.users WHERE username=$1', username)
     .then(function (data) {
 //      console.log(data);
       if(data ==  null)
