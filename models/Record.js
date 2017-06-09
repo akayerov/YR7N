@@ -7,7 +7,10 @@ var Record = sequelize.define('records', {
   date_rec: {
     type: Sequelize.DATE
   },
-  date_in: {
+  date_end: {
+    type: Sequelize.DATE
+  },
+  date_fact: {
     type: Sequelize.DATE
   },
   state: {

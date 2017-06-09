@@ -11,7 +11,10 @@ var Patient = sequelize.define('patients', {
   lname: {
     type: Sequelize.STRING
   },
-  sity: {
+  date_b: {
+    type: Sequelize.DATE
+  },
+  city: {
     type: Sequelize.STRING
   },
   street: {

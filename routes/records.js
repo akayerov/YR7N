@@ -43,33 +43,4 @@ router.get('/', function(req, res, next) {
 });
 
 
-router.post('/', function(req, res, next) {
-      //console.log(req);
-      Record.create( req.body).then(function(task) {
-//         console.log('Success');
-         res.send('OK');
-      });
-});
-
-router.delete('/:id', function(req, res, next) {
-//      оригинальный способ по переданному id в body, но мыработает в духе REST
-//      Record.findById(req.body.id).then(function(Record) {
-       Record.findById(req.params.id).then(function(record) {
-        if( record.state == 0 && req.user.moId == record.moId)
-          record.destroy();
-        res.send('OK');
-      })
-});
-
-
-  router.put('/:id', function(req, res, next) {
-//      console.log(req.body.id);
-      Record.findById(req.params.id).then(function(record) {
-        record.update(req.body).then(function() {
-          res.send('OK');
-        })
-     })
-});
-
-
 module.exports = router;

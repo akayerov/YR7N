@@ -9,6 +9,8 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var patients = require('./routes/patients');
 var records = require('./routes/records');
+var record  = require('./routes/record');
+var recordFull  = require('./routes/recordFull');
 var whoami = require('./routes/whoami');
 var sessions = require('./routes/sessions');
 var Sequelize = require("sequelize");
@@ -132,6 +134,8 @@ app.use('/patients', patients);
 app.use('/sessions', sessions);
 //app.use('/records', mustAuthenticatedMw, records);
 //app.use('/whoami', mustAuthenticatedMw, whoami);
+app.use('/record', passport.authenticate('jwt', { session: false }), record);
+app.use('/recordf', passport.authenticate('jwt', { session: false }), recordFull);
 app.use('/records', passport.authenticate('jwt', { session: false }), records);
 app.use('/private', passport.authenticate('jwt', { session: false }), function (req, res) {
   console.log(req);
@@ -167,7 +171,7 @@ app.use(function(err, req, res, next) {
 
 // секция sequalize
 
-// console.log(process.env);
+ console.log(process.env);
 // Создание и заполнения базы по модели производится при наличии переменной
 // и если база заканчивается на _test
 var syncAll = require('./db/schema/createall');
