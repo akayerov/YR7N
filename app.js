@@ -128,7 +128,8 @@ passport.deserializeUser(function(username, done) {
 // попытка избавиться от формирования ответов 304
 // работает! без этого нрестабильно работал refresh после удаления
 //https://stackoverflow.com/questions/14641308/how-to-totally-prevent-http-304-responses-in-connect-express-static-middleware
-app.disable('etag');
+// выключение etag работает, однаок возможно пролблема была в несинхронности посылки данных из-за неправильного использования промисов в процедере удаления объектов
+//app.disable('etag');
 
 app.use('/', index);
 app.use('/users', users);
