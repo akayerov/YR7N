@@ -11,6 +11,8 @@ var patients = require('./routes/patients');
 var records = require('./routes/records');
 var record  = require('./routes/record');
 var recordFull  = require('./routes/recordFull');
+var exportF  = require('./routes/exportF');
+
 var whoami = require('./routes/whoami');
 var sessions = require('./routes/sessions');
 var Sequelize = require("sequelize");
@@ -140,6 +142,7 @@ app.use('/sessions', sessions);
 app.use('/record', passport.authenticate('jwt', { session: false }), record);
 app.use('/recordf', passport.authenticate('jwt', { session: false }), recordFull);
 app.use('/records', passport.authenticate('jwt', { session: false }), records);
+app.use('/export', passport.authenticate('jwt', { session: false }), exportF);
 app.use('/private', passport.authenticate('jwt', { session: false }), function (req, res) {
   console.log(req);
   res.json({ success: true, result: [{ id: '01', name: 'Apple' },  { id: '02', name: 'Orange' }] })
