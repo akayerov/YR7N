@@ -26,6 +26,9 @@ var Patient = sequelize.define('patients', {
   kvart: {
     type: Sequelize.STRING
   },
+  contact: {
+    type: Sequelize.STRING
+  },
 });
 
 module.exports = Patient;

@@ -12,6 +12,8 @@ var records = require('./routes/records');
 var record  = require('./routes/record');
 var recordFull  = require('./routes/recordFull');
 var exportF  = require('./routes/exportF');
+var exportF2  = require('./routes/exportF2');
+var exportF3  = require('./routes/exportF3');
 
 var whoami = require('./routes/whoami');
 var sessions = require('./routes/sessions');
@@ -143,6 +145,8 @@ app.use('/record', passport.authenticate('jwt', { session: false }), record);
 app.use('/recordf', passport.authenticate('jwt', { session: false }), recordFull);
 app.use('/records', passport.authenticate('jwt', { session: false }), records);
 app.use('/export', passport.authenticate('jwt', { session: false }), exportF);
+app.use('/export2', passport.authenticate('jwt', { session: false }), exportF2);
+app.use('/export3', passport.authenticate('jwt', { session: false }), exportF3);
 app.use('/private', passport.authenticate('jwt', { session: false }), function (req, res) {
   console.log(req);
   res.json({ success: true, result: [{ id: '01', name: 'Apple' },  { id: '02', name: 'Orange' }] })
