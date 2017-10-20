@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{doc.title}
+  a.btn.btn-primary( href="load_receipt" ) Загрузка в базу  рецептов
+  p Выгрузка
+  Начало Не работает пока!!!
+  input( value='#{doc.date_b}' type='date')
+  Конец
+  input( value='#{doc.date_e}' type='date')
+  div
+    p
+    a.btn.btn-primary( href="make_xml/?date_b=#{doc.date_e}" ) Формирование XML для ФР7Н

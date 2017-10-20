@@ -22,9 +22,9 @@ const workDBF = () => {
   let count_rec=0;
   parser.on('record', function(record) {
     //      console.log(record.Ss + ":" + record['C-Ogrn']); // Name: John Smith
-        if(!count_rec++) {
+        if(count_rec++ < 2) {
 //          console.log(record); // Name: John Smith
-          parserRec(record);
+//          parserRec(record);
           addRecipe(record,function(mess) {
                              console.log('add Message=', mess);
           })
