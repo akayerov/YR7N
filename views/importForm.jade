@@ -3,12 +3,22 @@ extends layout
 block content
   h1= title
   p Welcome to #{doc.title}
-  a.btn.btn-primary( href="load_receipt" ) Загрузка в базу  рецептов
+  a.btn.btn-primary( href="load_receipt" ) Загрузка рецептов из DBF в базу данных
+  p Загрузка
+  form(method='get', action='/load_receipt')
+    Файл с рецептами
+    input( name='nameFile'  type='file')
+    p Отбор записей - Период с по
+    div
+      input( name='idate_b' value='#{doc.idate_b}' type='date')
+      input( name='idate_e' value='#{doc.idate_e}' type='date')
+    div
+      button( type='submit') Загрузить DBF файл в базу данных
+
   p Выгрузка
-  Начало Не работает пока!!!
-  input( value='#{doc.date_b}' type='date')
-  Конец
-  input( value='#{doc.date_e}' type='date')
-  div
-    p
-    a.btn.btn-primary( href="make_xml/?date_b=#{doc.date_e}" ) Формирование XML для ФР7Н
+  form(method='get', action='/make_xml')
+    p Период с по
+    input( name='date_b' value='#{doc.date_b}' type='date')
+    input( name='date_e'   value='#{doc.date_e}' type='date')
+    div
+      button( type='submit') Формировать XML файл ФР7Н
