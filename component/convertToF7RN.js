@@ -1,8 +1,7 @@
 var findPatient = require('./findPatient');
 var findDoctor =  require('./findDoctor');
-var findMNN    =  require('./findMNN');
+var findMedicament    =  require('./findMedicament');
 var findMO     =  require('./findMO');
-var findDrugForm    =  require('./findDrugForm');
 var dateYMD = require('../util/dateYMD');
 
 function convertToF7RN(rec, callback) {
@@ -31,18 +30,19 @@ function convertToF7RN(rec, callback) {
       isTheraphyResistence:false, //Резистентность к терапии по указанному препарату
       territoryId :78,       //Уникальный идентификатор Субъекта Российской Федерации
       deliveryDate:dateYMD(rec.date_otp), //Дата отпуска препарата по рецепту
-      dosageId:'0',          //Уникальный идентификатор отпущенной дозы
-      doseInPack:'0',        //Уникальный идентификатор количества доз в упаковке
+      dosageId:'1',          //Уникальный идентификатор отпущенной дозы
+//    doseInPack:'0',        //Уникальный идентификатор количества доз в упаковке
+      dosageCountId :'1',        //Уникальный идентификатор количества доз в упаковке
       packCount :rec.ko_all, //Количество отпущенных упаковок
       pharmacyId : '1.2.643.5.1.13.13.12.3.76.718',  //Код аптечной организации
       vznDrugId :'1',          // Уникальный идентификатор отпущенного лекарственного препарата
-      signedPerson:'',        //Руководитель, подписавший карточку
-      recipeOperationId:'2'   // предположительно означает: добавить запись - 2, изменить запись - 3    
+      signedPerson:'Иванов',        //Руководитель, подписавший карточку
+      recipeOperationId:'2'   // предположительно означает: добавить запись - 2, изменить запись - 3
     }
   }
 
 //  test('Smit', resultRec);
-  const num_paralell_func = 5;
+  const num_paralell_func = 4;
   let ii=0;
   findPatient(rec, resultRec, (resultRec)=>{
     if(++ii == num_paralell_func)
@@ -52,15 +52,11 @@ function convertToF7RN(rec, callback) {
     if(++ii == num_paralell_func)
       callback(resultRec);
   });
-  findMNN(rec, resultRec, (resultRec)=>{
+  findMedicament(rec, resultRec, (resultRec)=>{
     if(++ii == num_paralell_func)
       callback(resultRec);
   });
   findMO(rec, resultRec, (resultRec)=>{
-    if(++ii == num_paralell_func)
-      callback(resultRec);
-  });
-  findDrugForm(rec, resultRec, (resultRec)=>{
     if(++ii == num_paralell_func)
       callback(resultRec);
   });

@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var load_receipt = require('./routes/load_receipt');
 var make_xml = require('./routes/make_xml');
+var control_medicament = require('./routes/control_medicament');
 
 var app = express();
 
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/load_receipt', load_receipt);
 app.use('/make_xml', make_xml);
+app.use('/control_medicament', control_medicament);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

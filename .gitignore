@@ -2,4 +2,8 @@ node_modules
 *.dbf
 *.doc*
 *.xlsx
+*.xml
+*.zip
+*.txt
+
 

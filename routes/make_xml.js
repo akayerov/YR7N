@@ -30,6 +30,32 @@ const makeArrObj = (period, arr_res, callback) => {
     }, period)
 
 }
+
+const saveToFile = (nameFile,xml) => {
+  const fs = require('fs');
+  fs.writeFile(nameFile, xml, (err) => {
+   if (err) throw err;
+   console.log('The file has been saved!');
+   var archiver = require('archiver');
+   var output = fs.createWriteStream('./result.zip');
+   var archive = archiver('zip', {
+    zlib: { level: 9 } // Sets the compression level.
+   });
+   output.on('close', function() {
+    console.log(archive.pointer() + ' total bytes');
+    console.log('archiver has been finalized and the output file descriptor has closed.');
+   })
+   archive.pipe(output);
+   archive.file(nameFile, { name: nameFile });
+   archive.finalize();
+   console.log('The ZIP file has been saved!:');
+
+ });
+
+}
+
+
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   console.log('req.params:',req.params);
@@ -47,23 +73,26 @@ router.get('/', function(req, res, next) {
          arr_err = _.uniq(arr_err);
      console.log('END WORK DATA');
      console.log('ERROR DATA',arr_err );
-
+     let numReceipt = 0;
+//     if(_.size(arr_err) == 0) {
      if(_.size(arr_err) != 0) {
   //  конвертация массива объектов в XML файл
        let arr = arr_res.map((obj)=> {
           delete obj.error;
           return obj;
        })
+       numReceipt = _.size(arr);
        let xml = convertToXML(arr);
        console.log('RESULT XML',xml );
+       saveToFile('export_rec.xml',xml);
+
      }
      const num_err = _.size(arr_err);
-//     res.send(`Формирование XML:ошибок - ${num_err}\n
-//               ${arr_err} `);
 
      res.render('resultOperation', {res : { title: 'Формирование XML файлов для ФР7Н',
-                           numError: num_err ,errors:arr_err}});
-
+                           numError: num_err ,
+                           numReceipt: numReceipt,
+                           errors:arr_err}});
   });
 //  res.send('Формирование XML');
 

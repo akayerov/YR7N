@@ -71,10 +71,19 @@ const convertToXML_xmlbuilder = (rec) => {
     var dosageId  = recipe.ele('dosageId');
         dosageId.att('id',el.recipe.dosageId );
 
-    var doseInPack = recipe.ele('doseInPack',el.recipe.doseInPack);
-    var packCount = recipe.ele('packCount',el.recipe.packCount);
+  //  устарело, заменено на  dosageCountId
+  //  var doseInPack = recipe.ele('doseInPack',el.recipe.doseInPack);
 
-    var personId = recipe.ele('personId',el.recipe.personId);
+    var dosageCountId  = recipe.ele('dosageCountId ');
+        dosageCountId .att('id',el.recipe.dosageCountId  );
+
+    var packCount = recipe.ele('packCount',el.recipe.packCount);
+    // убрать пробелы и тире из СНИЛС
+    var reg = /[-+\s+]/g;
+
+     person = el.recipe.personId.replace(reg,'');
+    var personId = recipe.ele('personId',person);
+
     var desease = recipe.ele('desease',el.recipe.desease);
 
     var mnnId  = recipe.ele('mnnId');

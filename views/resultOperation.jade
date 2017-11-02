@@ -2,6 +2,7 @@ extends layout
 
 block content
   h3 Результат выполнения #{res.title}
+  p Выгружено рецептов: #{res.numReceipt}
   p Ошибок:#{res.numError}
   - var len = res.errors.length;
   ul

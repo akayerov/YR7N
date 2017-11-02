@@ -3,7 +3,6 @@ extends layout
 block content
   h1= title
   p Welcome to #{doc.title}
-  a.btn.btn-primary( href="load_receipt" ) Загрузка рецептов из DBF в базу данных
   p Загрузка
   form(method='get', action='/load_receipt')
     Файл с рецептами
@@ -14,7 +13,10 @@ block content
       input( name='idate_e' value='#{doc.idate_e}' type='date')
     div
       button( type='submit') Загрузить DBF файл в базу данных
-
+  p Контроль
+  form(method='get', action='/control_medicament')
+    div
+      button( type='submit') Проверить медикаменты на заполнение кодов ФР7Н
   p Выгрузка
   form(method='get', action='/make_xml')
     p Период с по
